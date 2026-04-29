@@ -172,7 +172,6 @@ project_root/
 
 - **Предусловие**:
   1. Авторизоваться (`Firstname.Lastname:123-Test`)
-  2. Запрос `SELECT COUNT(*) FROM wp_posts WHERE ID = 9999` возвращает `0`
 
 - **Шаги**:
   1. Отправить POST-запрос:
@@ -182,7 +181,7 @@ project_root/
 - **Ожидаемый результат**:
   1. Код ответа `404 Not Found`
   2. Тело ответа содержит `error` или `message`
-  3. Запрос `SELECT COUNT(*) FROM wp_posts WHERE ID = 9999` также возвращает `0`
+  3. Запрос `SELECT COUNT(*) FROM wp_posts WHERE ID = 9999` возвращает `0`
 
 - **Тестовые данные**:
   1. Basic Auth `USERNAME:PASSWORD` — `Firstname.Lastname:123-Test`
@@ -192,7 +191,6 @@ project_root/
 
 - **Предусловие**:
   1. Авторизоваться (`Firstname.Lastname:123-Test`)
-  2. Запрос `SELECT COUNT(*) FROM wp_posts WHERE ID = 9999` возвращает `0`
 
 - **Шаги**:
   1. Отправить DELETE-запрос:
@@ -201,7 +199,7 @@ project_root/
 - **Ожидаемый результат**: 
   1. Код ответа `404 Not Found`
   2. Тело ответа содержит `error` или `message`
-  3. Запрос `SELECT COUNT(*) FROM wp_posts WHERE ID = 9999` также возвращает `0`
+  3. Запрос `SELECT COUNT(*) FROM wp_posts WHERE ID = 9999` возвращает `0`
 
 - **Тестовые данные**:
   1. Basic Auth `USERNAME:PASSWORD` — `Firstname.Lastname:123-Test`
