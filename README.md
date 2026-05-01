@@ -93,7 +93,7 @@ project_root/
   3. Запрос `SELECT post_title, post_content FROM wp_posts WHERE ID = {id}` находит строку с `post_title = TestPost1`
 
 - **Постусловие**: 
-  1. Удалить созданный пост: `DELETE FROM wp_posts WHERE ID = {id}`
+  1. Удалить созданный пост: `DELETE FROM wp_posts WHERE ID = {id} OR post_parent = %s`
 
 - **Тестовые данные**:
   1. Basic Auth `USERNAME:PASSWORD` — `Firstname.Lastname:123-Test`
@@ -121,7 +121,7 @@ project_root/
   `post_title = Updated Title`
 
 - **Постусловие**: 
-  1. Удалить созданный пост: `DELETE FROM wp_posts WHERE ID = {id}`
+  1. Удалить созданный пост: `DELETE FROM wp_posts WHERE ID = {id} OR post_parent = %s`
 
 - **Тестовые данные**:
   1. Basic Auth `USERNAME:PASSWORD` — `Firstname.Lastname:123-Test`
@@ -159,9 +159,12 @@ project_root/
      * В теле запроса передать: `{"status": "draft", "content": "No Title"}`
 
 - **Ожидаемый результат**: 
-  1. Код ответа `400 Bad Request`
-  2. Тело ответа содержит `error` или `message`
-  3. Запрос `SELECT COUNT(*) FROM wp_posts WHERE post_title IS NULL` возвращает `0`
+  1. Код ответа `201 Created`
+  2. Тело ответа содержит переданные параметры
+  3. Запрос `SELECT post_title, post_content FROM wp_posts WHERE ID = {id}` находит строку с пустым `post_title`
+
+- **Постусловие**: 
+  1. Удалить созданный пост: `DELETE FROM wp_posts WHERE ID = {id} OR post_parent = %s`
 
 - **Тестовые данные**:
   1. Basic Auth `USERNAME:PASSWORD` — `Firstname.Lastname:123-Test`
