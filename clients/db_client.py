@@ -31,12 +31,6 @@ class WordPressDbClient:
 
                 return cursor.rowcount
 
-    def is_post_exists(self, post_id: int, expected_title: str) -> bool:
-        query = 'SELECT COUNT(1) as cnt FROM wp_posts WHERE ID = %s AND post_title = %s'
-        result = self.execute_query(query, (post_id, expected_title))
-
-        return result[0]['cnt'] > 0 if result else False
-
     def delete_post_by_id(self, post_id: int) -> None:
         """Удаляет пост и его ревизию по ID"""
         query = 'DELETE FROM wp_posts WHERE ID = %s OR post_parent = %s'
