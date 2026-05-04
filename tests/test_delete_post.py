@@ -1,24 +1,19 @@
 from clients.api_client import WordPressApiClient
 from clients.db_client import WordPressDbClient
 import pytest
+from utils.response_parser import ParsedResponse, parse_api_response
 
 @pytest.mark.wp
 @pytest.mark.positive
 @pytest.mark.posts
-def test_delete_post(api_client: WordPressApiClient, db_client: WordPressDbClient, cleanup_test_posts: list) -> None:
-    post_id: int = db_client.create_test_post('Test Post 2', 'Test Content 2')
-    cleanup_test_posts.append(post_id)
+def test_delete_post(api_client: WordPressApiClient, db_client: WordPressDbClient, test_post: int, cleanup_test_posts: list) -> None:
+    response = api_client.delete_post(post_id=test_post, force=True)
+    parsed: ParsedResponse = parse_api_response(response)
 
-    response = api_client.delete_post(post_id=post_id, force=True)
+    assert parsed.status_code == 200, \
+        f'Ожидался статус 200 OK, но получен {parsed.status_code}'
 
-    status_code: int = response.status_code
+    result = db_client.get_count_posts_by_id(test_post)
 
-    assert status_code == 200, \
-        f'Ожидался статус 200 OK, но получен {status_code}'
-
-    result = db_client.execute_query(
-        'SELECT COUNT(*) as cnt FROM wp_posts WHERE ID = %s', (post_id,)
-    )
-
-    assert result[0]['cnt'] == 0, \
-        f'Пост с ID = {post_id} не был удален'
+    assert result == 0, \
+        f'Пост с ID = {test_post} не был удален'

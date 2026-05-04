@@ -106,7 +106,7 @@ project_root/
 - **Предусловие**:
   1. Авторизоваться (`Firstname.Lastname:123-Test`)
   2. Создать тестовый пост: `INSERT INTO wp_posts (post_title, post_content, post_status) VALUES 
-  ('Original Title', 'Original Content', 'publish')`
+  ('Test Title', 'Test Content', 'publish')`
   3. Зафиксировать `id` поста
 
 - **Шаги**:
@@ -133,7 +133,7 @@ project_root/
 - **Предусловие**:
   1. Авторизоваться (`Firstname.Lastname:123-Test`)
   2. Создать тестовый пост: `INSERT INTO wp_posts (post_title, post_content, post_status) VALUES 
-  ('Test Post 2', 'Test Content 2', 'publish')`
+  ('Test Title', 'Test Content', 'publish')`
   3. Зафиксировать `id` поста
 
 - **Шаги**:
