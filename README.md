@@ -74,7 +74,9 @@ project_root/
 
 ---
 
-## WordPress Suite
+# WordPress Suite
+
+## D1 Тест-кейсы
 
 ### Тест-кейс №01. Создание поста
 
@@ -121,7 +123,7 @@ project_root/
   `post_title = Updated Title`
 
 - **Постусловие**: 
-  1. Удалить созданный пост: `DELETE FROM wp_posts WHERE ID = {id} OR post_parent = %s`
+  1. Удалить созданный пост: `DELETE FROM wp_posts WHERE ID = {id} OR post_parent = {id}`
 
 - **Тестовые данные**:
   1. Basic Auth `USERNAME:PASSWORD` — `Firstname.Lastname:123-Test`
@@ -207,3 +209,87 @@ project_root/
 - **Тестовые данные**:
   1. Basic Auth `USERNAME:PASSWORD` — `Firstname.Lastname:123-Test`
   2. `force` — `True`
+
+## D2 Тест-кейсы
+
+### Тест-кейс №07. Получение существующего поста по ID
+
+- **Предусловие**:
+  1. Авторизоваться (`Firstname.Lastname:123-Test`)
+  2. Создать тестовый пост: `INSERT INTO wp_posts (post_title, post_content, post_status) VALUES 
+  ('Test Title', 'Test Content', 'publish')`
+  3. Зафиксировать `id` поста
+
+- **Шаги**:
+  1. Отправить GET-запрос:
+     * На `http://localhost:8000/index.php?rest_route=/wp/v2/posts/{id}`
+
+- **Ожидаемый результат**:
+  1. Код ответа `200 OK`
+  2. Тело ответа содержит зафиксированный `id`
+  3. Запрос `SELECT post_title, post_content FROM wp_posts WHERE ID = {id}` находит строку с 
+  `post_title = Test Title`
+
+- **Постусловие**: 
+  1. Удалить созданный пост: `DELETE FROM wp_posts WHERE ID = {id} OR post_parent = {id}`
+
+- **Тестовые данные**:
+  1. Basic Auth `USERNAME:PASSWORD` — `Firstname.Lastname:123-Test`
+
+### Тест-кейс №08. Получение списка постов с фильтрацией по статусу
+
+- **Предусловие**:
+  1. Авторизоваться (`Firstname.Lastname:123-Test`)
+  2. Создать первый тестовый пост: `INSERT INTO wp_posts (post_title, post_content, post_status) VALUES 
+  ('Test Title', 'Test Content', 'publish')`
+  3. Создать первый тестовый пост: `INSERT INTO wp_posts (post_title, post_content, post_status) VALUES 
+  ('Test Title', 'Test Content', 'publish')`
+  4. Зафиксировать `id` постов
+
+- **Шаги**:
+  1. Отправить GET-запрос:
+     * На `http://localhost:8000/index.php?rest_route=/wp/v2/posts&status=publish`
+
+- **Ожидаемый результат**:
+  1. Код ответа `200 OK`
+  2. Тело ответа содержит массив постов со статусами `publish` и зафиксированными `id`
+
+- **Постусловие**: 
+  1. Удалить созданные посты: `DELETE FROM wp_posts WHERE ID = {id1}/{id2} OR post_parent = {id1}/{id2}`
+
+- **Тестовые данные**:
+  1. Basic Auth `USERNAME:PASSWORD` — `Firstname.Lastname:123-Test`
+  2. `status` — `publish`
+
+### Тест-кейс №09. Получение несуществующего поста
+
+- **Предусловие**:
+  1. Авторизоваться (`Firstname.Lastname:123-Test`)
+
+- **Шаги**:
+  1. Отправить GET-запрос:
+     * На `http://localhost:8000/index.php?rest_route=/wp/v2/posts/9999`
+
+- **Ожидаемый результат**:
+  1. Код ответа `404 Not Found`
+  2. Тело ответа содержит `error` или `message`
+
+- **Тестовые данные**:
+  1. Basic Auth `USERNAME:PASSWORD` — `Firstname.Lastname:123-Test`
+
+### Тест-кейс №10. Поиск поста по несуществующему заголовку
+
+- **Предусловие**:
+  1. Авторизоваться (`Firstname.Lastname:123-Test`)
+
+- **Шаги**:
+  1. Отправить GET-запрос:
+     * На `http://localhost:8000/index.php?rest_route=/wp/v2/posts&search=123NONEXISTENT_TITLE321`
+
+- **Ожидаемый результат**:
+  1. Код ответа `200 OK`
+  2. Тело ответа содержит пустой массив `[]`
+
+- **Тестовые данные**:
+  1. Basic Auth `USERNAME:PASSWORD` — `Firstname.Lastname:123-Test`
+  2. `search` — `123NONEXISTENT_TITLE321`

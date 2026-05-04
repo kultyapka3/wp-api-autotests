@@ -1,11 +1,16 @@
+"""Парсер ответов API"""
+
 from dataclasses import dataclass
 import requests
+
 
 @dataclass
 class ParsedResponse:
     """Структурированный ответ"""
+
     status_code: int
     body: dict
+
 
 def parse_api_response(response: requests.Response) -> ParsedResponse:
     """Извлекает статус и тело"""
