@@ -10,6 +10,7 @@ from utils.response_parser import ParsedResponse, parse_api_response
 @pytest.mark.wp
 @pytest.mark.negative
 @pytest.mark.posts
+@pytest.mark.d1
 def test_update_nonexistent_post(
     api_client: WordPressApiClient, db_client: WordPressDbClient
 ) -> None:

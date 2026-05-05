@@ -1,4 +1,4 @@
-"""ТК002. Обновление поста"""
+"""ТК007. Получение существующего поста по ID"""
 
 from typing import Callable
 
@@ -12,16 +12,14 @@ from utils.response_parser import ParsedResponse, parse_api_response
 @pytest.mark.wp
 @pytest.mark.positive
 @pytest.mark.posts
-@pytest.mark.d1
-def test_update_post(
+@pytest.mark.d2
+def test_get_post_by_id(
     api_client: WordPressApiClient,
     db_client: WordPressDbClient,
     test_post_factory: Callable[[], int],
     cleanup_test_posts: list[int],
 ) -> None:
-    response = api_client.update_post(
-        post_id=test_post_factory(), title="Updated Title", content="Updated Content"
-    )
+    response = api_client.get_post(post_id=test_post_factory())
     parsed: ParsedResponse = parse_api_response(response)
 
     post_id: int = parsed.body["id"]
@@ -31,12 +29,11 @@ def test_update_post(
         parsed.status_code == 200
     ), f"Ожидался статус 200 OK, но получен {parsed.status_code}"
     assert (
-        parsed.body["title"]["rendered"] == "Updated Title"
-        and parsed.body["content"]["raw"] == "Updated Content"
-    ), "Тело ответа не содержит переданных параметров"
+        parsed.body["id"] == post_id
+    ), f"ID в ответе ({parsed.body["id"]}) не совпадает с созданным ({post_id})"
 
     result = db_client.get_post_by_id(post_id)
 
     assert (
-        result is not None and result["post_title"] == "Updated Title"
-    ), f"Пост с ID {post_id} не был обновлен"
+        result is not None and result["post_title"] == "Test Title"
+    ), f"Пост с ID {post_id} не найден в БД или имеет неверные данные"
