@@ -40,3 +40,5 @@ dist/
 *.egg-info/
 *.egg
 *.whl
+
+!.env.example
