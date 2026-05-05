@@ -16,16 +16,13 @@ from utils.response_parser import ParsedResponse, parse_api_response
 def test_update_post(
     api_client: WordPressApiClient,
     db_client: WordPressDbClient,
-    test_post_factory: Callable[[], int],
-    cleanup_test_posts: list[int],
+    test_post_factory: Callable[[], int]
 ) -> None:
     response = api_client.update_post(
         post_id=test_post_factory(), title="Updated Title", content="Updated Content"
     )
     parsed: ParsedResponse = parse_api_response(response)
-
     post_id: int = parsed.body["id"]
-    cleanup_test_posts.append(post_id)
 
     assert (
         parsed.status_code == 200

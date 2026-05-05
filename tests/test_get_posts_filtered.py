@@ -16,12 +16,9 @@ from utils.response_parser import ParsedResponse, parse_api_response
 def test_get_posts_filtered(
     api_client: WordPressApiClient,
     db_client: WordPressDbClient,
-    test_post_factory: Callable[[], int],
-    cleanup_test_posts: list[int],
+    test_post_factory: Callable[[], int]
 ) -> None:
     ids = [test_post_factory(), test_post_factory()]
-    cleanup_test_posts.extend(ids)
-
     response = api_client.get_posts_list(status="publish")
     parsed: ParsedResponse = parse_api_response(response)
 
