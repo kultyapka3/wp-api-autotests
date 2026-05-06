@@ -10,10 +10,11 @@ from utils.response_parser import ParsedResponse, parse_api_response
 @pytest.mark.wp
 @pytest.mark.positive
 @pytest.mark.posts
+@pytest.mark.d1
 def test_create_post(
     api_client: WordPressApiClient,
     db_client: WordPressDbClient,
-    cleanup_test_posts: list,
+    cleanup_test_posts: list[int],
 ) -> None:
     response = api_client.create_post(
         title="TestPost1", status="draft", content="Test content"

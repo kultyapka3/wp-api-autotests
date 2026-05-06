@@ -65,7 +65,7 @@ class WordPressDbClient:
         """Создает тестовый пост напрямую"""
         with self._get_connection() as conn:
             with conn.cursor() as cursor:
-                cursor.execute(CREATE_TEST_POST, (content, title, status))
+                cursor.execute(CREATE_TEST_POST, (title, content, status))
                 conn.commit()
 
                 return cursor.lastrowid

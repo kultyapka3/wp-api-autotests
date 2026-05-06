@@ -1,4 +1,4 @@
-"""ТК003. Удаление поста"""
+"""ТК010. Поиск поста по несуществующему заголовку"""
 
 import pytest
 
@@ -8,21 +8,22 @@ from utils.response_parser import ParsedResponse, parse_api_response
 
 
 @pytest.mark.wp
-@pytest.mark.positive
+@pytest.mark.negative
 @pytest.mark.posts
-@pytest.mark.d1
-def test_delete_post(
+@pytest.mark.d2
+def test_search_nonexistent_title(
     api_client: WordPressApiClient,
     db_client: WordPressDbClient,
-    test_post: int,
 ) -> None:
-    response = api_client.delete_post(post_id=test_post, force=True)
+    search = "123NONEXISTENT_TITLE321"
+
+    response = api_client.get_posts_list(search=search)
     parsed: ParsedResponse = parse_api_response(response)
 
     assert (
         parsed.status_code == 200
     ), f"Ожидался статус 200 OK, но получен {parsed.status_code}"
 
-    result = db_client.get_count_posts_by_id(test_post)
-
-    assert result == 0, f"Пост с ID = {test_post} не был удален"
+    assert (
+        isinstance(parsed.body, list) and len(parsed.body) == 0
+    ), f"Ответ не является пустым списком: {parsed.body}"
