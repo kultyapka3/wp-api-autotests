@@ -1,5 +1,7 @@
 """ТК002. Обновление поста"""
 
+from typing import Callable
+
 import pytest
 
 from clients.api_client import WordPressApiClient
@@ -10,19 +12,17 @@ from utils.response_parser import ParsedResponse, parse_api_response
 @pytest.mark.wp
 @pytest.mark.positive
 @pytest.mark.posts
+@pytest.mark.d1
 def test_update_post(
     api_client: WordPressApiClient,
     db_client: WordPressDbClient,
-    test_post: int,
-    cleanup_test_posts: list,
+    test_post_factory: Callable[[], int]
 ) -> None:
     response = api_client.update_post(
-        post_id=test_post, title="Updated Title", content="Updated Content"
+        post_id=test_post_factory(), title="Updated Title", content="Updated Content"
     )
     parsed: ParsedResponse = parse_api_response(response)
-
     post_id: int = parsed.body["id"]
-    cleanup_test_posts.append(post_id)
 
     assert (
         parsed.status_code == 200
