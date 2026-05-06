@@ -1,7 +1,5 @@
 """ТК003. Удаление поста"""
 
-from typing import Callable
-
 import pytest
 
 from clients.api_client import WordPressApiClient
@@ -16,16 +14,15 @@ from utils.response_parser import ParsedResponse, parse_api_response
 def test_delete_post(
     api_client: WordPressApiClient,
     db_client: WordPressDbClient,
-    test_post_factory: Callable[[], int],
+    test_post: int,
 ) -> None:
-    post_id = test_post_factory()
-    response = api_client.delete_post(post_id=post_id, force=True)
+    response = api_client.delete_post(post_id=test_post, force=True)
     parsed: ParsedResponse = parse_api_response(response)
 
     assert (
         parsed.status_code == 200
     ), f"Ожидался статус 200 OK, но получен {parsed.status_code}"
 
-    result = db_client.get_count_posts_by_id(post_id)
+    result = db_client.get_count_posts_by_id(test_post)
 
-    assert result == 0, f"Пост с ID = {post_id} не был удален"
+    assert result == 0, f"Пост с ID = {test_post} не был удален"

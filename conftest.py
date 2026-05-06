@@ -21,23 +21,10 @@ def db_client() -> WordPressDbClient:
 
 
 @pytest.fixture()
-def test_post_factory(db_client: WordPressDbClient) -> Iterator[Callable[[], int]]:
-    """Создание тестового поста по вызову"""
-    created_ids: list[int] = []
-
-    def _create() -> int:
-        post_id = db_client.create_test_post(title="Test Title", content="Test Content")
-        created_ids.append(post_id)
-
-        return post_id
-
-    yield _create
-
-    for pid in created_ids:
-        try:
-            db_client.delete_post_by_id(pid)
-        except Exception:
-            pass
+def test_post(db_client: WordPressDbClient) -> Iterator[int]:
+    """Создание тестового поста"""
+    post_id = db_client.create_test_post(title="Test Title", content="Test Content")
+    yield post_id
 
     try:
         db_client.delete_post_by_id(post_id)
