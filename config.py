@@ -16,3 +16,11 @@ DB_PORT: int = int(os.getenv("DB_PORT", "3306"))
 DB_NAME: str = os.getenv("DB_NAME", "wordpress")
 DB_USER: str = os.getenv("DB_USER", "wordpress")
 DB_PASS: str = os.getenv("DB_PASS", "wordpress")
+
+# Yandex Disk
+YANDEX_DISK_API_URL: str = os.getenv(
+    "YANDEX_DISK_API_URL", "https://cloud-api.yandex.net"
+)
+YANDEX_DISK_TOKEN: str = os.getenv(
+    "YANDEX_DISK_AUTH_TOKEN", "your_yandex_disk_auth_token"
+)

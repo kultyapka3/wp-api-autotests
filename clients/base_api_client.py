@@ -1,17 +1,27 @@
-"""Базовый клиент для WordPress API"""
+"""Базовый клиент API"""
+
+from typing import Optional, Tuple, Dict
 
 import requests
-
-from config import WP_API_URL, WP_API_USER, WP_API_PASS
 
 
 class BaseApiClient:
     """Базовый API класс"""
 
-    def __init__(self) -> None:
+    def __init__(
+        self,
+        base_url: str,
+        auth: Optional[Tuple[str, str]] = None,
+        headers: Optional[Dict[str, str]] = None,
+    ) -> None:
+        self.base_url = base_url
         self.session = requests.Session()
-        self.session.auth = (WP_API_USER, WP_API_PASS)
-        self.base_url = f"{WP_API_URL}/index.php?rest_route=/wp/v2"
+
+        if auth:
+            self.session.auth = auth
+
+        if headers:
+            self.session.headers.update(headers)
 
     def _build_url(self, endpoint: str) -> str:
         return f"{self.base_url}{endpoint}"

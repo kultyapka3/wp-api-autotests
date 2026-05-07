@@ -6,6 +6,7 @@ import pytest
 
 from clients.api_client import WordPressApiClient
 from clients.db_client import WordPressDbClient
+from clients.yandex_disk_api_client import YandexDiskApiClient
 
 
 @pytest.fixture()
@@ -18,6 +19,12 @@ def api_client() -> WordPressApiClient:
 def db_client() -> WordPressDbClient:
     """Фикстура для БД клиента"""
     return WordPressDbClient()
+
+
+@pytest.fixture()
+def yandex_disk_api_client() -> YandexDiskApiClient:
+    """Фикстура для API клиента Yandex Disk"""
+    return YandexDiskApiClient()
 
 
 @pytest.fixture()
