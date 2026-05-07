@@ -21,4 +21,4 @@ def test_yandex_auth_without_token(
 
     assert (
         parsed.body["error"] and parsed.body["description"] and parsed.body["message"]
-    ), f"Тело ответа не содержит поле user: {parsed.body}"
+    ), f"Тело ответа не содержит поля ошибки: {parsed.body}"
