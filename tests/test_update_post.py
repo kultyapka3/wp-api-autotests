@@ -1,7 +1,5 @@
 """ТК002. Обновление поста"""
 
-from typing import Callable
-
 import pytest
 
 from clients.api_client import WordPressApiClient
