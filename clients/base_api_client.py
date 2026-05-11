@@ -37,3 +37,7 @@ class BaseApiClient:
     def delete(self, endpoint: str, **kwargs) -> requests.Response:
         """DELETE-запрос"""
         return self.session.delete(self._build_url(endpoint), **kwargs)
+
+    def put(self, endpoint: str, **kwargs) -> requests.Response:
+        """PUT-запрос"""
+        return self.session.put(self._build_url(endpoint), **kwargs)

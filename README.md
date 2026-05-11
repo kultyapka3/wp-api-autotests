@@ -293,3 +293,112 @@ project_root/
 - **Тестовые данные**:
   1. Basic Auth `USERNAME:PASSWORD` — `Firstname.Lastname:123-Test`
   2. `search` — `123NONEXISTENT_TITLE321`
+
+## D4 Тест-кейсы
+
+### Тест-кейс №11. Создание папки
+
+- **Предусловие**:
+  1. Авторизоваться (`valid_token`)
+
+- **Шаги**:
+  1. Отправить PUT-запрос:
+     * На `https://cloud-api.yandex.net/v1/disk/resources`
+     * В параметрах запроса передать: `path=FolderForTest`
+
+- **Ожидаемый результат**:
+  1. Код ответа `201 Created`
+  2. Тело ответа содержит `href` с параметром `path=FolderForTest`
+
+- **Постусловие**: 
+  1. Удалить созданную папку: `DELETE https://cloud-api.yandex.net/v1/disk/resources?path=FolderForTest&permanently=true`
+
+- **Тестовые данные**:
+  1. OAuth `valid_token`
+  2. `path` — `FolderForTest`
+
+### Тест-кейс №12. Удаление папки (перемещение в корзину)
+
+- **Предусловие**:
+  1. Авторизоваться (`valid_token`)
+  2. Создать тестовую папку: `PUT https://cloud-api.yandex.net/v1/disk/resources?path=TestFolder`
+
+- **Шаги**:
+  1. Отправить DELETE-запрос:
+     * На `https://cloud-api.yandex.net/v1/disk/resources`
+     * В параметрах запроса передать: `path=TestFolder`
+
+- **Ожидаемый результат**:
+  1. Код ответа `204 No Content`
+  2. Тело ответа отсутствует (`пустой ответ`)
+
+- **Постусловие**: 
+  1. Удалить папку в корзине: `DELETE https://cloud-api.yandex.net/v1/disk/trash/resources?path=TestFolder`
+
+- **Тестовые данные**:
+  1. OAuth `valid_token`
+  2. `path` — `TestFolder`
+
+### Тест-кейс №13. Восстановление папки
+
+- **Предусловие**:
+  1. Авторизоваться (`valid_token`)
+  2. Создать тестовую папку: `PUT https://cloud-api.yandex.net/v1/disk/resources?path=TestFolder`
+  3. Переместить тестовую папку в корзину: `DELETE https://cloud-api.yandex.net/v1/disk/resources?path=TestFolder`
+  4. Зафиксировать `path` элемента с текстом `TestFolder`: `GET https://cloud-api.yandex.net/v1/disk/trash/resources` 
+
+- **Шаги**:
+  1. Отправить PUT-запрос:
+     * На `https://cloud-api.yandex.net/v1/disk/trash/resources/restore`
+     * В параметрах запроса передать зафиксированный `path`
+
+- **Ожидаемый результат**:
+  1. Код ответа `201 Created`
+  2. Тело ответа содержит `href` с параметром `path=TestFolder`
+
+- **Постусловие**: 
+  1. Удалить восстановленную папку: `DELETE https://cloud-api.yandex.net/v1/disk/resources?path=TestFolder&permanently=true`
+
+- **Тестовые данные**:
+  1. OAuth `valid_token`
+  2. `path` — `TestFolder`
+
+### Тест-кейс №14. Создание уже существующей папки
+
+- **Предусловие**:
+  1. Авторизоваться (`valid_token`)
+  2. Создать тестовую папку: `PUT https://cloud-api.yandex.net/v1/disk/resources?path=TestFolder`
+
+- **Шаги**:
+  1. Отправить PUT-запрос:
+     * На `https://cloud-api.yandex.net/v1/disk/resources`
+     * В параметрах запроса передать: `path=TestFolder`
+
+- **Ожидаемый результат**:
+  1. Код ответа `409 Conflict`
+  2. Тело ответа содержит `error` и `message`
+
+- **Постусловие**: 
+  1. Удалить созданную папку: `DELETE https://cloud-api.yandex.net/v1/disk/resources?path=TestFolder&permanently=true`
+
+- **Тестовые данные**:
+  1. OAuth `valid_token`
+  2. `path` — `TestFolder`
+
+### Тест-кейс №15. Удаление несуществующей папки
+
+- **Предусловие**:
+  1. Авторизоваться (`valid_token`)
+
+- **Шаги**:
+  1. Отправить DELETE-запрос:
+     * На `https://cloud-api.yandex.net/v1/disk/resources`
+     * В параметрах запроса передать: `path=123NONEXISTENT_FOLDER321`
+
+- **Ожидаемый результат**:
+  1. Код ответа `404 Not Found`
+  2. Тело ответа содержит `error` и `message`
+
+- **Тестовые данные**:
+  1. OAuth `valid_token`
+  2. `path` — `123NONEXISTENT_FOLDER321`
