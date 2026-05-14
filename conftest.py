@@ -60,7 +60,9 @@ def new_post_factory(db_client: WordPressDbClient) -> Iterator[Callable[[], int]
         try:
             db_client.delete_post_by_id(pid)
         except Exception as e:
-            logger.warning(f"Ошибка при удалении тестового поста из фабрики с ID = {pid}: {e}")
+            logger.warning(
+                f"Ошибка при удалении тестового поста из фабрики с ID = {pid}: {e}"
+            )
 
 
 @pytest.fixture()
