@@ -15,7 +15,7 @@ from utils.response_parser import ParsedResponse, parse_api_response
 @pytest.mark.positive
 @pytest.mark.d4
 def test_create_folder(
-    yandex_disk_api_client: YandexDiskApiClient, cleanup_test_folders: list[str]
+    yandex_disk_api_client: YandexDiskApiClient, cleanup_folders: list[str]
 ) -> None:
     folder_name = "FolderForTest"
 
@@ -29,7 +29,7 @@ def test_create_folder(
             parsed.status_code == 201
         ), f"Ожидался статус 201 Created, но получен {parsed.status_code}"
 
-    cleanup_test_folders.append(folder_name)
+    cleanup_folders.append(folder_name)
 
     with allure.step(
         "Проверяем, что в теле ответа содержится поле href с именем папки"

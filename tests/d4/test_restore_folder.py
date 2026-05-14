@@ -15,10 +15,10 @@ from utils.response_parser import ParsedResponse, parse_api_response
 @pytest.mark.positive
 @pytest.mark.d4
 def test_restore_folder(
-    yandex_disk_api_client: YandexDiskApiClient, test_trash_folder: str
+    yandex_disk_api_client: YandexDiskApiClient, new_trash_folder: str
 ) -> None:
     with allure.step("Восстановление папки"):
-        response = yandex_disk_api_client.restore_folder(test_trash_folder)
+        response = yandex_disk_api_client.restore_folder(new_trash_folder)
 
     parsed: ParsedResponse = parse_api_response(response)
 

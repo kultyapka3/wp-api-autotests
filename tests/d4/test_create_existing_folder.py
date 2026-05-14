@@ -15,10 +15,10 @@ from utils.response_parser import ParsedResponse, parse_api_response
 @pytest.mark.negative
 @pytest.mark.d4
 def test_create_existing_folder(
-    yandex_disk_api_client: YandexDiskApiClient, test_folder: str
+    yandex_disk_api_client: YandexDiskApiClient, new_folder: str
 ) -> None:
     with allure.step("Создаем папку с уже существующим именем"):
-        response = yandex_disk_api_client.create_folder(test_folder)
+        response = yandex_disk_api_client.create_folder(new_folder)
 
     parsed: ParsedResponse = parse_api_response(response)
 

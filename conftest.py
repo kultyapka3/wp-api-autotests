@@ -32,7 +32,7 @@ def yandex_disk_api_client() -> YandexDiskApiClient:
 
 
 @pytest.fixture()
-def test_post(db_client: WordPressDbClient) -> Iterator[int]:
+def new_post(db_client: WordPressDbClient) -> Iterator[int]:
     """Создание тестового поста"""
     post_id = db_client.create_test_post(title="Test Title", content="Test Content")
     yield post_id
@@ -44,7 +44,7 @@ def test_post(db_client: WordPressDbClient) -> Iterator[int]:
 
 
 @pytest.fixture()
-def test_post_factory(db_client: WordPressDbClient) -> Iterator[Callable[[], int]]:
+def new_post_factory(db_client: WordPressDbClient) -> Iterator[Callable[[], int]]:
     """Создание тестового поста по вызову"""
     created_ids: list[int] = []
 
@@ -64,7 +64,7 @@ def test_post_factory(db_client: WordPressDbClient) -> Iterator[Callable[[], int
 
 
 @pytest.fixture()
-def test_folder(yandex_disk_api_client: YandexDiskApiClient) -> Iterator[str]:
+def new_folder(yandex_disk_api_client: YandexDiskApiClient) -> Iterator[str]:
     """Создание тестовой папки"""
     folder_name = "TestFolder"
     yandex_disk_api_client.create_folder(folder_name)
@@ -88,7 +88,7 @@ def test_folder(yandex_disk_api_client: YandexDiskApiClient) -> Iterator[str]:
 
 
 @pytest.fixture()
-def test_trash_folder(yandex_disk_api_client: YandexDiskApiClient) -> Iterator[str]:
+def new_trash_folder(yandex_disk_api_client: YandexDiskApiClient) -> Iterator[str]:
     """Создание тестовой папки в корзине"""
     folder_name = "TestFolder"
     yandex_disk_api_client.create_folder(folder_name)
@@ -113,7 +113,7 @@ def test_trash_folder(yandex_disk_api_client: YandexDiskApiClient) -> Iterator[s
 
 
 @pytest.fixture(autouse=True)
-def cleanup_test_posts(db_client: WordPressDbClient) -> Iterator[list[int]]:
+def cleanup_posts(db_client: WordPressDbClient) -> Iterator[list[int]]:
     """Удаление созданных в тесте постов"""
     created_ids: list[int] = []
     yield created_ids
@@ -126,7 +126,7 @@ def cleanup_test_posts(db_client: WordPressDbClient) -> Iterator[list[int]]:
 
 
 @pytest.fixture(autouse=True)
-def cleanup_test_folders(
+def cleanup_folders(
     yandex_disk_api_client: YandexDiskApiClient,
 ) -> Iterator[list[str]]:
     """Удаление созданных в тесте папок"""
