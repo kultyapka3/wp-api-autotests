@@ -1,14 +1,14 @@
 """Конфигурация из переменных окружения"""
 
-import os
 from dotenv import load_dotenv
+import os
 
 load_dotenv()
 
 # API
 WP_API_URL: str = os.getenv("WP_API_URL", "http://localhost:8000")
 WP_API_USER: str = os.getenv("WP_API_USER", "Firstname.Lastname")
-WP_API_PASS: str = os.getenv("WP_API_PASS", "123-Test")
+WP_API_PASS: str = os.getenv("WP_API_PASS", "123-Asd")
 
 # DB
 DB_HOST: str = os.getenv("DB_HOST", "localhost")

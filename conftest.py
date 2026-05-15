@@ -5,7 +5,7 @@ from typing import Iterator, Callable
 
 import pytest
 
-from clients.api_client import WordPressApiClient
+from clients.wp_api_client import WordPressApiClient
 from clients.db_client import WordPressDbClient
 from clients.yandex_disk_api_client import YandexDiskApiClient
 from utils.response_parser import parse_api_response, ParsedResponse
@@ -14,8 +14,8 @@ logger = logging.getLogger(__name__)
 
 
 @pytest.fixture()
-def api_client() -> WordPressApiClient:
-    """Фикстура для API клиента"""
+def wp_api_client() -> WordPressApiClient:
+    """Фикстура для WordPress API клиента"""
     return WordPressApiClient()
 
 

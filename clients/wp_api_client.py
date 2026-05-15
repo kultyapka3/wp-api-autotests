@@ -5,12 +5,21 @@ from typing import Final, Optional
 import requests
 
 from clients.base_api_client import BaseApiClient
+from config import WP_API_URL, WP_API_USER, WP_API_PASS
 
-ENDPOINT_POSTS: Final[str] = "/posts"
+ENDPOINT_POSTS: Final[str] = "/wp/v2/posts"
 
 
 class WordPressApiClient(BaseApiClient):
     """Класс для работы с WordPress API"""
+
+    def __init__(self) -> None:
+        base_url = f"{WP_API_URL}/index.php?rest_route="
+
+        super().__init__(
+            base_url=base_url,
+            auth=(WP_API_USER, WP_API_PASS),
+        )
 
     def create_post(
         self, title: Optional[str] = None, status: str = "draft", content: str = ""
